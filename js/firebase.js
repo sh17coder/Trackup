@@ -1,12 +1,11 @@
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCTaa9yQLrvOXanDQNjFE_qAwP4TjpBmj4",
+  authDomain: "trackup-11ec2.firebaseapp.com",
+  projectId: "trackup-11ec2",
+  storageBucket: "trackup-11ec2.firebasestorage.app",
+  messagingSenderId: "175798822097",
+  appId: "1:175798822097:web:842eb385af8cd5d94691f0"
 };
 
 // Initialize Firebase
