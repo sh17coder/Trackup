@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study & Habit Tracker</title>
+  <link href="./css/styles.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+  <header class="bg-white dark:bg-gray-800 shadow">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Study Tracker</h1>
+      <div class="flex items-center space-x-4">
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+          <span class="dark:hidden">🌙</span>
+          <span class="hidden dark:inline">☀️</span>
+        </button>
+        <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded hidden">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <!-- Auth state dependent content -->
+    <div id="auth-content" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Habit Tracker Section -->
+        <div class="md:col-span-2">
+          <section class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">My Habits</h2>
+            <div id="habits-container" class="space-y-4"></div>
+            
+            <form id="add-habit-form" class="mt-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-3">Add New Habit</h3>
+              <div class="space-y-3">
+                <div>
+                  <label for="habit-name" class="block mb-1">Habit Name</label>
+                  <input type="text" id="habit-name" required class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                  <label for="habit-description" class="block mb-1">Description (Optional)</label>
+                  <textarea id="habit-description" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"></textarea>
+                </div>
+                <div>
+                  <label for="habit-target" class="block mb-1">Target Value (Optional)</label>
+                  <input type="number" id="habit-target" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Habit</button>
+              </div>
+            </form>
+          </section>
+          
+          <!-- Timers Section -->
+          <section class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Study Tools</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Pomodoro Timer -->
+              <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-3">Pomodoro Timer</h3>
+                <div class="text-center mb-3">
+                  <div id="pomodoro-display" class="text-4xl font-mono">25:00</div>
+                </div>
+                <div class="space-y-3">
+                  <div>
+                    <label for="pomodoro-subject" class="block mb-1">Subject</label>
+                    <input type="text" id="pomodoro-subject" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                  </div>
+                  <div>
+                    <label for="pomodoro-topic" class="block mb-1">Topic</label>
+                    <input type="text" id="pomodoro-topic" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                  </div>
+                  <div class="flex space-x-2">
+                    <button id="pomodoro-start" class="px-4 py-2 bg-green-500 text-white rounded flex-1">Start</button>
+                    <button id="pomodoro-stop" class="px-4 py-2 bg-red-500 text-white rounded flex-1">Stop</button>
+                    <button id="pomodoro-reset" class="px-4 py-2 bg-gray-500 text-white rounded flex-1">Reset</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Stopwatch -->
+              <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-3">Stopwatch</h3>
+                <div class="text-center mb-3">
+                  <div id="stopwatch-display" class="text-4xl font-mono">00:00</div>
+                </div>
+                <div class="space-y-3">
+                  <div>
+                    <label for="stopwatch-subject" class="block mb-1">Subject</label>
+                    <input type="text" id="stopwatch-subject" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                  </div>
+                  <div>
+                    <label for="stopwatch-topic" class="block mb-1">Topic</label>
+                    <input type="text" id="stopwatch-topic" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                  </div>
+                  <div class="flex space-x-2">
+                    <button id="stopwatch-start" class="px-4 py-2 bg-green-500 text-white rounded flex-1">Start</button>
+                    <button id="stopwatch-stop" class="px-4 py-2 bg-red-500 text-white rounded flex-1">Stop</button>
+                    <button id="stopwatch-reset" class="px-4 py-2 bg-gray-500 text-white rounded flex-1">Reset</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        
+        <!-- Analytics & Sharing Section -->
+        <div class="space-y-8">
+          <!-- Quick Stats -->
+          <section class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">Today's Stats</h2>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span>Study Time:</span>
+                <span class="font-semibold">2.5 hours</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Habits Completed:</span>
+                <span class="font-semibold">3/5</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Current Streak:</span>
+                <span class="font-semibold">7 days</span>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Sharing -->
+          <section class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">Share Your Progress</h2>
+            <div class="space-y-3">
+              <div>
+                <label class="block mb-1">Your Share Code</label>
+                <div class="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded font-mono" id="user-code">AB1234</div>
+              </div>
+              <div>
+                <label class="block mb-1">Shareable Link</label>
+                <div class="flex">
+                  <input type="text" id="share-link" readonly class="flex-1 px-3 py-2 border rounded-l dark:bg-gray-700 dark:border-gray-600">
+                  <button id="copy-link" class="px-3 py-2 bg-blue-500 text-white rounded-r">Copy</button>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Motivational Quote -->
+          <section class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-2">Motivation</h2>
+            <p id="motivational-quote" class="italic">Loading quote...</p>
+          </section>
+        </div>
+      </div>
+      
+      <!-- Analytics Charts -->
+      <section class="mt-12">
+        <h2 class="text-2xl font-semibold mb-6">Your Analytics</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <canvas id="time-trend-chart"></canvas>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <canvas id="subject-dist-chart"></canvas>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <canvas id="habit-completion-chart"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Login prompt -->
+    <div id="login-prompt" class="text-center py-12">
+      <h2 class="text-2xl font-semibold mb-4">Welcome to Study Tracker</h2>
+      <p class="mb-6">Track your study habits and progress with our comprehensive toolset.</p>
+      <a href="/auth.html" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Login or Sign Up</a>
+    </div>
+  </main>
+</body>
+</html>
